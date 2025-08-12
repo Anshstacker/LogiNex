@@ -519,7 +519,7 @@
             const data = await mockApi.getDashboardData(state.authToken);
             if (data.success) {
                 document.getElementById('stats-total-shipments').textContent = data.stats.totalShipments;
-                document.getElementById('stats-on-time-rate').textContent = ${data.stats.onTimeRate}%;
+                document.getElementById('stats-on-time-rate').textContent = $data.stats.onTimeRate%;
                 document.getElementById('stats-avg-cost-saving').textContent = ${data.stats.avgCostSaving}%;
                 document.getElementById('stats-co2-saved').textContent = ${data.stats.co2Saved};
                 renderTable(shipmentListBody, data.shipments, getShipmentRowHTML);
