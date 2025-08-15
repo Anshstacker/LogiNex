@@ -21,7 +21,7 @@
         :root {
             --bg-dark: #0a092d;
             --bg-light: #101c42;
-            --primary: #00fddc;
+            --primary: #00fddc; 
             --primary-glow: rgba(0, 253, 220, 0.4);
             --secondary: #9e77f8;
             --accent-pink: #ff3b81;
@@ -519,9 +519,9 @@
             const data = await mockApi.getDashboardData(state.authToken);
             if (data.success) {
                 document.getElementById('stats-total-shipments').textContent = data.stats.totalShipments;
-                document.getElementById('stats-on-time-rate').textContent = $data.stats.onTimeRate%;
-                document.getElementById('stats-avg-cost-saving').textContent = $data.stats.avgCostSaving%;
-                document.getElementById('stats-co2-saved').textContent = $data.stats.co2Saved;
+                document.getElementById('stats-on-time-rate').textContent = `${data.stats.onTimeRate}%`;
+                document.getElementById('stats-avg-cost-saving').textContent = `${data.stats.avgCostSaving}%`;
+                document.getElementById('stats-co2-saved').textContent = `${data.stats.co2Saved}`;
                 renderTable(shipmentListBody, data.shipments, getShipmentRowHTML);
             }
         };
@@ -532,7 +532,7 @@
             const data = await mockApi.getInventoryData(state.authToken);
             if (data.success) {
                 document.getElementById('inv-stats-total-skus').textContent = data.stats.totalSKUs;
-                document.getElementById('inv-stats-stock-value').textContent = ₹${data.stats.stockValue.toLocaleString('en-IN')};
+                document.getElementById('inv-stats-stock-value').textContent = `₹${data.stats.stockValue.toLocaleString('en-IN')}`;
                 document.getElementById('inv-stats-low-stock').textContent = data.stats.lowStock;
                 document.getElementById('inv-stats-out-of-stock').textContent = data.stats.outOfStock;
                 renderTable(inventoryListBody, data.products, getInventoryRowHTML);
@@ -551,7 +551,7 @@
         const renderTable = (tbody, data, rowTemplateFn) => {
             tbody.innerHTML = '';
             if (data.length === 0) {
-                tbody.innerHTML = <tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No data found.</td></tr>;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No data found.</td></tr>`;
                 return;
             }
             data.forEach(item => {
@@ -561,9 +561,9 @@
             });
         };
         
-        const getSkeletonHTML = (rows, cols) => Array(rows).fill(<tr><td colspan="${cols}"><div class="skeleton skeleton-text"></div></td></tr>).join('');
+        const getSkeletonHTML = (rows, cols) => Array(rows).fill(`<tr><td colspan="${cols}"><div class="skeleton skeleton-text"></div></td></tr>`).join('');
 
-        const getShipmentRowHTML = (shipment) => `<td>${shipment.id}</td><td>${shipment.destination}</td><td><span class="status status-${shipment.status.toLowerCase().replace(/\s+/g, '-')}">${shipment.status}</span></td><td>${shipment.date}</td><td>${shipment.status === 'In Transit' ? <button class="track-btn" data-id="${shipment.id}">Track</button> : '-'}</td>`;
+        const getShipmentRowHTML = (shipment) => `<td>${shipment.id}</td><td>${shipment.destination}</td><td><span class="status status-${shipment.status.toLowerCase().replace(/\s+/g, '-')}">${shipment.status}</span></td><td>${shipment.date}</td><td>${shipment.status === 'In Transit' ? `<button class="track-btn" data-id="${shipment.id}">Track</button>` : '-'}</td>`;
 
         const getInventoryRowHTML = (product) => {
             let statusClass = 'in-stock';
@@ -573,7 +573,7 @@
             let barClass = 'success';
             if (statusClass === 'low-stock') barClass = 'warning';
             if (statusClass === 'out-of-stock') barClass = 'danger';
-            return <td><div class="product-cell"><img src="${product.img}" class="product-img" onerror="this.style.display='none'"> ${product.name}</div></td><td>${product.sku}</td><td>${product.category}</td><td><div style="display: flex; align-items: center; gap: 8px;"><span>${product.stock}</span><div class="stock-bar"><div class="stock-bar-inner ${barClass}" style="width: ${stockPercentage}%"></div></div></div></td><td><span class="status status-${statusClass}">${statusClass.replace('-', ' ')}</span></td>;
+            return `<td><div class="product-cell"><img src="${product.img}" class="product-img" onerror="this.style.display='none'"> ${product.name}</div></td><td>${product.sku}</td><td>${product.category}</td><td><div style="display: flex; align-items: center; gap: 8px;"><span>${product.stock}</span><div class="stock-bar"><div class="stock-bar-inner ${barClass}" style="width: ${stockPercentage}%"></div></div></div></td><td><span class="status status-${statusClass}">${statusClass.replace('-', ' ')}</span></td>`;
         };
         
         const createChart = (canvasId, type, chartData, title) => {
@@ -659,7 +659,7 @@
                 stock: parseInt(document.getElementById('product-stock').value),
                 reorderPoint: parseInt(document.getElementById('product-reorder').value),
                 value: 0, // Not in form for simplicity
-                img: https://placehold.co/40x40/cccccc/0a092d?text=${document.getElementById('product-name').value.charAt(0)}
+                img: `https://placehold.co/40x40/cccccc/0a092d?text=${document.getElementById('product-name').value.charAt(0)}`
             };
             const res = await mockApi.createProduct(state.authToken, newProduct);
             if(res.success) {
